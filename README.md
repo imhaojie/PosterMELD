@@ -13,7 +13,7 @@
   </p>
 
   <p>
-    <a href="https://jackey0903.github.io/PosterMELD/"><strong>Project Page</strong></a>
+    <a href="https://imhaojie.github.io/PosterMELD/"><strong>Project Page</strong></a>
     · <a href="https://arxiv.org/abs/2608.02218"><strong>Paper</strong></a>
     · <a href="poster_generation/"><strong>Poster Generation</strong></a>
     · <a href="benchmark_eval/"><strong>Benchmark Evaluation</strong></a>
