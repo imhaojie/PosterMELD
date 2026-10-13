@@ -6,13 +6,6 @@
   <p><strong>Multi-Agent Paper-to-Poster Generation for Controllable Design Diversity<br />with Editable Print-Ready Outputs</strong></p>
 
   <p>
-    <strong>M</strong>ulti-Agent ·
-    <strong>E</strong>ditable ·
-    <strong>L</strong>ayouts ·
-    <strong>D</strong>esign diversity
-  </p>
-
-  <p>
     <a href="https://imhaojie.github.io/PosterMELD/"><strong>Project Page</strong></a>
     · <a href="https://arxiv.org/abs/2608.02218"><strong>Paper</strong></a>
     · <a href="poster_generation/"><strong>Poster Generation</strong></a>
@@ -35,31 +28,31 @@
   <img src="docs/readme/teaser.png" width="100%" alt="PosterMELD qualitative comparison" />
 </p>
 
-PosterMELD converts scientific papers into **native, editable PowerPoint posters** and matching PNG renders. It plans template capacity before writing, grounds every section in the source paper, composes figures and tables as editable assets, and applies bounded deterministic and VLM quality checks.
+PosterMELD generates **editable PowerPoint posters** and PNG previews from scientific papers. It selects a template, writes sections to fit the layout, places figures and tables from the paper, and checks the result before export.
 
 ## Repository Modules
 
-The repository is organized as two independently runnable modules:
+The two modules run independently:
 
 | Module | Purpose | Entry point |
 |---|---|---|
-| [`poster_generation/`](poster_generation/) | End-to-end PDF-to-PPTX/PNG generation pipeline, including prompts, templates, assets, configuration, scripts, and regression tests | `python -m src.workflow.pipeline` or `postermeld` |
-| [`benchmark_eval/`](benchmark_eval/) | Standalone PRR/CHE, Universal Score, and Keypoint BERTScore evaluation code | `python -m prr_che.evaluate`, `python -m universal_score.evaluate`, and `python -m keypoint_bertscore.*` |
+| [`poster_generation/`](poster_generation/) | PDF-to-PPTX/PNG generation | `python -m src.workflow.pipeline` or `postermeld` |
+| [`benchmark_eval/`](benchmark_eval/) | PRR/CHE, Universal Score, and Keypoint BERTScore evaluation | `python -m prr_che.evaluate`, `python -m universal_score.evaluate`, and `python -m keypoint_bertscore.*` |
 
-[`skills/postermeld/`](skills/postermeld/) is a lightweight Codex and Claude Code interface. It installs and invokes the complete generation module instead of maintaining a reduced agent-only renderer.
+[`skills/postermeld/`](skills/postermeld/) lets Codex and Claude Code install and run the generation module.
 
-The project website and paper figures are kept in [`docs/`](docs/) so GitHub Pages remains independent of both runtime modules.
+[`docs/`](docs/) contains the project website and paper figures.
 
 ## Highlights
 
-- **Multi-agent composition:** specialized agents coordinate paper understanding, capacity-aware writing, layout, visual placement, and review through one traceable state.
-- **Editable outputs:** text, figures, tables, section bars, and logos remain native PowerPoint elements.
-- **Design diversity:** 16 landscape and 8 portrait templates support controllable style, density, background, header, and seed variations.
-- **Paper-grounded content:** MinerU extracts text and visual assets; Marker is retained as an automatic fallback.
-- **Bounded quality repair:** deterministic geometry checks and VLM review target only failed aspects instead of repeatedly rebuilding the poster.
-- **Reproducible evaluation:** request-level PRR, conditional CHE, Universal Score, and Keypoint BERTScore are provided as a separate package.
+- **Multi-agent generation:** agents share paper content and layout state to write sections, place visuals, and review the poster.
+- **Editable outputs:** text, figures, tables, section bars, and logos are separate PowerPoint objects.
+- **Design controls:** 16 landscape and 8 portrait templates, with style, density, background, header, and seed settings.
+- **PDF extraction:** MinerU extracts text and visual assets, with Marker as a fallback.
+- **Quality checks:** geometry checks and VLM review identify problems for targeted repair.
+- **Evaluation:** PRR, conditional CHE, Universal Score, and Keypoint BERTScore run in a separate package.
 
-### Results at a glance
+### Results
 
 | Method | PRR (%) ↑ | CHE ↑ | Universal ↑ | Editable | Cost / request ↓ |
 |---|---:|---:|---:|:---:|---:|
@@ -79,7 +72,7 @@ PRR is computed over all requests. CHE is conditional on print-ready outputs, wh
   <img src="docs/readme/framework.png" width="100%" alt="PosterMELD generation pipeline" />
 </p>
 
-The generator follows a structure-first pipeline:
+Generation steps:
 
 1. Parse the PDF into grounded text, figures, tables, formulas, and metadata.
 2. Select a template and expose slot geometry, reading order, and capacity budgets.
@@ -108,7 +101,7 @@ Use $postermeld to generate a polished editable poster from /absolute/path/paper
 Use the complete visual pipeline with teaser, background, logos, and VLM review.
 ```
 
-The Skill performs environment checks, installs or locates the complete PosterMELD runtime, starts the original pipeline, streams its log, and returns the final PNG and editable PPTX. Full-quality generation still requires the model, VLM, image-generation, and MinerU services listed in [`poster_generation/.env.example`](poster_generation/.env.example); the Skill never hides a missing service behind a reduced-quality fallback.
+The Skill checks the environment, runs PosterMELD, and returns a PNG and editable PPTX. Configure the model, VLM, image-generation, and MinerU services in [`poster_generation/.env.example`](poster_generation/.env.example) to use the complete pipeline.
 
 ### Manual generation
 
@@ -166,7 +159,7 @@ See the [evaluation guide](benchmark_eval/README.md) for manifest schemas, aggre
   <img src="docs/readme/benchmark-composition.png" width="72%" alt="Composition of the PosterMELD benchmark" />
 </p>
 
-PosterMELD was evaluated end-to-end on 621 papers across 14 publication-source groups and 10 research domains. The evaluation module preserves missing generations in request-level denominators and separates print readiness from conditional visual quality.
+The benchmark contains 621 papers from 14 publication-source groups across 10 research domains. Request-level metrics include missing generations; conditional visual-quality metrics use only print-ready outputs.
 
 | Metric | Scope |
 |---|---|
@@ -223,8 +216,3 @@ make test-evaluation
 ## License
 
 PosterMELD is released under the [MIT License](LICENSE).
-
-<div align="center">
-  <br />
-  <strong>One paper, many valid posters.</strong>
-</div>
